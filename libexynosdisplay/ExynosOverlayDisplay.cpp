@@ -635,7 +635,7 @@ void ExynosOverlayDisplay::determineYuvOverlay(hwc_display_contents_1_t *content
     mHasCropSurface = false;
     for (size_t i = 0; i < contents->numHwLayers; i++) {
         hwc_layer_1_t &layer = contents->hwLayers[i];
-        if (layer.handle) {
+        if (layer.handle && !(layer.flags & HWC_SKIP_LAYER)) {
             private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
             if (getDrmMode(handle->flags) != NO_DRM) {
                 this->mHasDrmSurface = true;
@@ -686,7 +686,7 @@ void ExynosOverlayDisplay::determineSupportedOverlays(hwc_display_contents_1_t *
             continue;
         }
 
-        if (layer.handle && i < maxHwOverlays) {
+        if (layer.handle && i < maxHwOverlays && !(layer.flags & HWC_SKIP_LAYER)) {
             private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
             if ((int)get_yuv_planes(halFormatToV4L2Format(handle->format)) > 0) {
                 videoLayer = true;
@@ -900,7 +900,7 @@ void ExynosOverlayDisplay::assignWindows(hwc_display_contents_1_t *contents)
             }
         }
 
-        if (layer.handle) {
+        if (layer.handle && !(layer.flags & HWC_SKIP_LAYER)) {
             private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
             if (ExynosMPP::isFormatSupportedByGscOtf(handle->format)) {
                 /* in case of changing compostiontype form GSC to FRAMEBUFFER for yuv layer */
