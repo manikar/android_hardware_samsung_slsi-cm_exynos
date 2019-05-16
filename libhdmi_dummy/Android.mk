@@ -17,6 +17,8 @@ include $(CLEAR_VARS)
 
 LOCAL_SHARED_LIBRARIES := liblog libutils libcutils libexynosutils libexynosv4l2 libhwcutils libexynosdisplay libhwcutilsmodule
 
+LOCAL_CFLAGS += -Wno-unused-parameter
+
 ifeq ($(BOARD_USES_HWC_SERVICES),true)
 	LOCAL_CFLAGS += -DHWC_SERVICES
 ifeq ($(BOARD_USE_S3D_SUPPORT),true)
@@ -57,4 +59,3 @@ LOCAL_SRC_FILES := \
 LOCAL_MODULE_TAGS := eng
 LOCAL_MODULE := libhdmi
 include $(BUILD_SHARED_LIBRARY)
-
